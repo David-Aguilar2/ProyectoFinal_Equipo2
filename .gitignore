@@ -1,0 +1,36 @@
+# Entorno virtual
+env/
+clinica/env/
+*/env/
+
+# Base de datos
+*.sqlite3
+*.db
+db.sqlite3
+clinica/db.sqlite3
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+
+# Django
+*.log
+local_settings.py
+media/
+staticfiles/
+
+# Archivos de entorno
+.env
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema
+.DS_Store
+Thumbs.db
