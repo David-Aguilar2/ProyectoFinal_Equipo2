@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+
+{% block title %} Lista de Usuarios {% endblock %}
+
+{% block content %}
+<h1 class="text-center">Listado de citas medicas</h1>
+<br>
+<a href="{% url 'sistema:citas-create'%}" class="btn btn-outline-success">Agregar nueva cita</a>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Motivo de la consulta</th>
+            <th scope="col">Fecha para cita</th>
+            <th scope="col">Médico</th>
+            <th scope="col">Paciente</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--Iterar sobre lascitas de la BD-->
+        {% for c in citas %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{c.motivo_consulta}}</td>
+            <td>{{c.fecha_cita}}</td>
+            <td>{{c.id_medico.nombres}} {{c.id_medico.apellidos}}</td>
+            <td>{{c.id_paciente.nombres}} {{c.id_paciente.apellidos}}</td>
+            <td>
+                <a href="{% url 'sistema:citas-update' c.id_cita %}" class="btn btn-outline-warning">Editar</a>
+                <a href="{% url 'sistema:citas-delete' c.id_cita %}" class="btn btn-outline-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

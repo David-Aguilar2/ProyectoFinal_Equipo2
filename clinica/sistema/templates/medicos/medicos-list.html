@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+
+{% block title %} Lista de Medicos {% endblock %}
+
+{% block content %}
+<h1 class="text-center">Lista de Médicos</h1>
+<br>
+<a href="{% url 'sistema:medicos-create'%}" class="btn btn-outline-success">Agregar nuevo médico</a>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellidos</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--Iterar sobre los medicos de la BD-->
+        {% for m in medicos %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{m.id_usuario.correo}}</td>
+            <td>{{m.nombres}}</td>
+            <td>{{m.apellidos}}</td>
+            <td>{{m.telefono}}</td>
+            <td>{{m.id_especialidad.nombre_especialidad}}</td>
+            <td>
+                <a href="{% url 'sistema:medicos-update' m.id_medico %}" class="btn btn-outline-warning">Editar</a>
+                <a href="{% url 'sistema:medicos-delete' m.id_medico %}" class="btn btn-outline-danger">Eliminar</a>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

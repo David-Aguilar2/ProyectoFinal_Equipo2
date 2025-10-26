@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+
+{% block title %} Lista de Usuarios {% endblock %}
+
+{% block content %}
+<h1 class="text-center">Lista de pacientes</h1>
+<br>
+<a href="{% url 'sistema:pacientes-create'%}" class="btn btn-outline-success">Agregar nuevo paciente</a>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellidos</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--Iterar sobre los pacientes de la BD-->
+        {% for p in pacientes %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{p.id_usuario.correo}}</td>
+            <td>{{p.nombres}}</td>
+            <td>{{p.apellidos}}</td>
+            <td>{{p.telefono}}</td>
+            <td>
+                <a href="{% url 'sistema:pacientes-update' p.id_paciente %}" class="btn btn-outline-warning">Editar</a>
+                <a href="{% url 'sistema:pacientes-delete' p.id_paciente %}" class="btn btn-outline-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

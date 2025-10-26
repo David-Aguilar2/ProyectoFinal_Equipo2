@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Actualizar usuario paciente {% endblock %}
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Actualizar usuario paciente</h2>
+        </div>
+        <div class="car-body">
+            {{ form.as_table }}
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <button type="submit" class="btn btn-outline-primary">💾 Guardar cambios</button>
+            <a href="{% url 'sistema:pacientes-list' %}" class="btn btn-outline-info">❌Cancelar</a>
+        </div>
+    </div>
+</form>
+{% endblock %}
