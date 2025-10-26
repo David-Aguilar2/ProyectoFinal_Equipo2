@@ -16,3 +16,6 @@ para la web. También se modificaron los archivos views.py   urls.py   y   forms
 
 Las respectivas carpetas citas, especialidad, medicos y pacientes tienen ya en funcionamiento sus respectivos CRUD
 que modifican correctamente los datos en la base de datos.
+
+Copie y pegue el siguiente enlace en el navegador:
+http://127.0.0.1:8000/sistema/pacientes/
