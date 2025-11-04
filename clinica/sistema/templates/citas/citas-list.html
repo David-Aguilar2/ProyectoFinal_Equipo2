@@ -5,8 +5,9 @@
 {% block content %}
 <h1 class="text-center">Listado de citas medicas</h1>
 <br>
-<a href="{% url 'sistema:citas-create'%}" class="btn btn-outline-success">Agregar nueva cita</a>
-<table class="table table-hover">
+<a href="{% url 'sistema:citas-create'%}" class="btn btn-custom">Agregar nueva cita</a>
+<br><br>
+<table class="table table-custom table-hover">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -14,6 +15,7 @@
             <th scope="col">Fecha para cita</th>
             <th scope="col">Médico</th>
             <th scope="col">Paciente</th>
+            <th scope="col">Acciones</th>
         </tr>
     </thead>
     <tbody>

@@ -16,3 +16,18 @@ para la web. También se modificaron los archivos views.py   urls.py   y   forms
 
 Las respectivas carpetas citas, especialidad, medicos y pacientes tienen ya en funcionamiento sus respectivos CRUD
 que modifican correctamente los datos en la base de datos.
+
+Copie y pegue el siguiente enlace en el navegador:
+http://127.0.0.1:8000/sistema/pacientes/
+
+Actualización de cambios.
+
+Implementación del sistema de autenticación y Control de acceso y permisos.
+
+Se implementó un sistema de autenticación, no se podrá acceder al sistema si no se tiene una cuenta
+cuenta creada, se agregó un login para iniciar sesión y un registrarse para crearse una cuenta,
+en lugar de usar @login_required se optó por otra alternativa ya que el sistema de autenticación
+que se usa es diferente.
+
+Se agregó un menú para navegar mejor por el sistema y se modificó el navbar anterior al igual
+que se agregó diseños a la web usando bootstrap y otros archivos css.

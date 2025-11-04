@@ -1,0 +1,91 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/css/registrar.css' %}">
+    <title>Registrarse</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="ecg-loader">
+            <svg viewBox="0 0 300 100" preserveAspectRatio="none">
+                <polyline class="ecg-line" points="
+                0,50 20,50 30,30 40,70 50,50 80,50 90,10 100,90
+                110,50 140,50 150,30 160,70 170,50 300,50" />
+            </svg>
+        </div>
+
+        <div class="login-box">
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-content">
+                    <h2>Registrarse</h2>
+
+                    <!-- Mensajes de error -->
+                    {% if form.errors %}
+                    <div class="alert alert-error">
+                        {% for error in form.non_field_errors %}
+                        {{ error }}<br>
+                        {% endfor %}
+                        {% for field in form %}
+                        {% for error in field.errors %}
+                        {{ error }}<br>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="input-box">
+                        <input type="text" id="nombres" name="nombres" required>
+                        <label for="id_nombres">Nombres:</label>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="apellidos" name="apellidos" required>
+                        <label for="id_apellidos">Apellidos:</label>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="tel" id="telefono" name="telefono" required>
+                        <label for="id_telefono">Teléfono:</label>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="email" id="email" name="email" required>
+                        <label for="email">Correo:</label>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="password" id="contrasenia" name="contrasenia" required>
+                        <label for="contrasenia">Contraseña:</label>
+                    </div>
+
+                    <button type="submit" class="btn">Registrarse</button>
+
+                    <div class="signup-link">
+                        <br><a href="{% url 'core:login' %}">Regresar</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginBox = document.querySelector('.login-box');
+
+            loginBox.addEventListener('mouseenter', function () {
+                // Al primer hover, agregamos la clase permanente
+                this.classList.add('permanent-expand');
+            });
+        });
+    </script>
+</body>
+
+</html>

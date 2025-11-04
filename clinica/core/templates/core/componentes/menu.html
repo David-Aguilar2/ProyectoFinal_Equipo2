@@ -1,0 +1,80 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %} Menu {% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Información del usuario y cerrar sesión -->
+    {% if usuario_email %}
+    <div class="user-info text-end mb-4 p-3 bg-light rounded">
+        <div class="d-flex justify-content-between align-items-center">
+            <span class="text-accent">
+                <strong>Bienvenido:</strong> {{ usuario_email }}
+            </span>
+            <a href="{% url 'core:logout' %}" class="btn btn-outline-danger btn-sm">
+                Cerrar Sesión
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <h1 class="text-center text-accent mb-5">Menú Principal</h1>
+
+    <div class="row justify-content-center text-center">
+        <!-- Pacientes -->
+        <div class="col-md-4 mb-5">
+            <a href="{% url 'sistema:pacientes-list' %}" class="text-decoration-none">
+                <img src="{% static 'core/svg/pacientes.svg' %}" alt="Pacientes" class="mb-3" width="80">
+                <h5 class="text-accent">Pacientes</h5>
+            </a>
+        </div>
+
+        <!-- Médicos -->
+        <div class="col-md-4 mb-5">
+            <a href="{% url 'sistema:medicos-list' %}" class="text-decoration-none">
+                <img src="{% static 'core/svg/medicos.svg' %}" alt="Médicos" class="mb-3" width="80">
+                <h5 class="text-accent">Médicos</h5>
+            </a>
+        </div>
+
+        <!-- Especialidades -->
+        <div class="col-md-4 mb-5">
+            <a href="{% url 'sistema:especialidad-list' %}" class="text-decoration-none">
+                <img src="{% static 'core/svg/especialidad.svg' %}" alt="Especialidades" class="mb-3" width="80">
+                <h5 class="text-accent">Especialidades</h5>
+            </a>
+        </div>
+
+        <!-- Citas -->
+        <div class="col-md-4 mb-5">
+            <a href="{% url 'sistema:citas-list' %}" class="text-decoration-none">
+                <img src="{% static 'core/svg/citas.svg' %}" alt="Citas" class="mb-3" width="80">
+                <h5 class="text-accent">Citas</h5>
+            </a>
+        </div>
+
+        <!-- Cuenta -->
+        <div class="col-md-4 mb-5">
+            <a href="" class="text-decoration-none">
+                <img src="{% static 'core/svg/cuenta.svg' %}" alt="Citas" class="mb-3" width="80">
+                <h5 class="text-accent">Tu cuenta</h5>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .col-md-4:hover img {
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+
+    .col-md-4:hover h5 {
+        color: #09b !important;
+    }
+
+    .user-info {
+        border-left: 4px solid #09b;
+    }
+</style>
+{% endblock %}

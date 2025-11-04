@@ -3,18 +3,18 @@
 {% block title %} Eliminar especialidad médica {% endblock %}
 
 {% block content %}
-<div class="card shadow-lg border-danger">
-    <div class="card-header bg-danger text-white">
+<div class="card card-custom" style="border-color: #dc3545;">
+    <div class="card-header text-white" style="background-color: #dc3545; border-bottom-color: #dc3545;">
         <h3 class="text-center mb-0">{{ titulo }}</h3>
     </div>
     <div class="card-body text-center">
-        <p class="fs-5">¿Estás seguro de que deseas eliminar la especialidad médica <strong>{{ object.nombre_especialidad }}</strong>?</p>
+        <p class="fs-5">¿Estás seguro de que deseas eliminar la especialidad médica <strong class="text-accent">{{ object.nombre_especialidad }}</strong>?</p>
         <p class="text-danger"><strong>¡ATENCIÓN! Esta acción no se puede deshacer.</strong></p>
 
         <form method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger px-4">🗑️ Confirmar eliminación</button>
-            <a href="{% url 'sistema:especialidad-list' %}" class="btn btn-secondary px-4">Cancelar</a>
+            <a href="{% url 'sistema:especialidad-list' %}" class="btn btn-outline-secondary px-4">Cancelar</a>
         </form>
     </div>
 </div>

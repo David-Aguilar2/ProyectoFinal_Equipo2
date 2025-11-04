@@ -1,0 +1,20 @@
+.form-control {
+        background-color: #1a202c;
+        border: 1px solid #4a5568;
+        color: #f8f9fa;
+    }
+    
+    .form-control:focus {
+        background-color: #1a202c;
+        border-color: #0cf;
+        color: #f8f9fa;
+        box-shadow: 0 0 0 0.2rem rgba(0, 204, 255, 0.25);
+    }
+    
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .form-label {
+        font-weight: 600;
+    }

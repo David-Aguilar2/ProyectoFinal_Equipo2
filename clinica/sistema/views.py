@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 #Importar las vistas genéricas
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 #Importar las clases
@@ -18,6 +18,13 @@ class EspecialidadListView(ListView):
     template_name = 'especialidad/especialidad-list.html'
     context_object_name = 'especialidad'
 
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
+
 #Crear una clase genérica para crear una nueva especialidad
 class EspecialidadCreateView(CreateView):
 
@@ -26,6 +33,13 @@ class EspecialidadCreateView(CreateView):
     template_name = 'especialidad/especialidad-form.html'
     form_class = EspecialidadForm
     success_url = reverse_lazy('sistema:especialidad-list')
+
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
 
 #Crear una clase genérica para eliminar una especialidad
 class EspecialidadDeleteView(DeleteView):
@@ -39,6 +53,13 @@ class EspecialidadDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar Especialidad'
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
 
 #Crear una clase genérica para actualizar una especialidad
 class EspecialidadUpdateView(UpdateView):
@@ -53,6 +74,13 @@ class EspecialidadUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Actualizar Especialidad'
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
 
 #Crear una clase genérica para mostrar todos los pacientes
 class PacienteListView(ListView):
@@ -62,6 +90,13 @@ class PacienteListView(ListView):
     template_name = 'pacientes/pacientes-list.html'
     context_object_name = 'pacientes'
 
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
+
 #Crear una clase genérica para crear un nuevo paciente
 class PacienteCreateView(CreateView):
 
@@ -70,6 +105,13 @@ class PacienteCreateView(CreateView):
     template_name = 'pacientes/pacientes-form.html'
     form_class = PacienteForm
     success_url = reverse_lazy('sistema:pacientes-list')
+
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
 
 #Crear una clase genérica para eliminar un paciente
 class PacienteDeleteView(DeleteView):
@@ -95,6 +137,13 @@ class PacienteDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar Paciente y Usuario'
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
 
 #Crear una clase genérica para actualizar un paciente
 class PacienteUpdateView(UpdateView):
@@ -131,6 +180,13 @@ class PacienteUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Actualizar Paciente'
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
 
 #Crear una clase genérica para mostrar todos los medicos
 class MedicoListView(ListView):
@@ -140,6 +196,13 @@ class MedicoListView(ListView):
     template_name = 'medicos/medicos-list.html'
     context_object_name = 'medicos'
 
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
+
 #Crear una clase genérica para crear un nuevo medico
 class MedicoCreateView(CreateView):
 
@@ -148,6 +211,13 @@ class MedicoCreateView(CreateView):
     template_name = 'medicos/medicos-form.html'
     form_class = MedicoForm
     success_url = reverse_lazy('sistema:medicos-list')
+
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
 
 #Crear una clase genérica para eliminar un medico
 class MedicoDeleteView(DeleteView):
@@ -173,6 +243,13 @@ class MedicoDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar Médico y Usuario'
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
     
 #Crear una clase genérica para actualizar un medico
 class MedicoUpdateView(UpdateView):
@@ -210,7 +287,12 @@ class MedicoUpdateView(UpdateView):
         context['titulo'] = 'Actualizar Paciente'
         return context
     
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
 
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
 
 #Crear una clase genérica para mostrar todas las citas
 class CitaListView(ListView):
@@ -220,6 +302,13 @@ class CitaListView(ListView):
     template_name = 'citas/citas-list.html'
     context_object_name = 'citas'
 
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
+
 #Crear una clase genérica para crear una nueva cita
 class CitaCreateView(CreateView):
 
@@ -228,6 +317,13 @@ class CitaCreateView(CreateView):
     template_name = 'citas/citas-form.html'
     form_class = CitaForm
     success_url = reverse_lazy('sistema:citas-list')
+
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
 
 #Crear una clase genérica para eliminar una cita
 class CitaDeleteView(DeleteView):
@@ -241,6 +337,13 @@ class CitaDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar Cita'
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)
 
 #Crear una clase genérica para actualizar una cita
 class CitaUpdateView(UpdateView):
@@ -255,3 +358,10 @@ class CitaUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Actualizar Cita'
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica si el usuario está autenticado.
+
+        if not request.session.get('usuario_autenticado'):
+            return redirect('core:login')
+        return super().dispatch(request, *args, **kwargs)

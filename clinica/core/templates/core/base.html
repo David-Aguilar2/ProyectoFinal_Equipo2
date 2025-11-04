@@ -1,36 +1,39 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>{% block title %} Proyecto {% endblock %}</title>
+    <title>{% block title %} Sistema Clínica {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'core/css/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/form.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/redes.css' %}">
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar</a>
+                <p class="navbar-brand navbar-brand-custom">Sistema de Gestión Clínica</p>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'sistema:pacientes-list' %}">Pacientes</a>
+                            <a class="nav-link nav-link-custom" href="{% url 'core:menu' %}">
+                                <img src="{% static 'core/svg/home.svg' %}" alt="Inicio" class="me-1" width="20">
+                                Menú
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'sistema:medicos-list' %}">Médicos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'sistema:especialidad-list' %}">Especialidades médicas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'sistema:citas-list' %}">Citas médicas</a>
+                            <a class="nav-link nav-link-custom" href="{% url 'core:contactenos' %}">
+                                <img src="{% static 'core/svg/contacto.svg' %}" alt="Inicio" class="me-1" width="20">
+                                Contactenos
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -38,15 +41,21 @@
         </nav>
     </header>
 
-    <main>
+    <main class="container mt-5 pt-4">
         <!-- Contenido dinámico -->
-         {% block content %}
-         {% endblock %}
+        {% block content %}
+
+        {% endblock %}
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+    <footer class="footer-custom text-center">
+        <div class="container">
+            <p class="text-accent">Sistema de Gestión Clínica &copy; {% now "Y" %}</p>
+            <small class="text-accent">Desarrollado para una atención médica de calidad</small>
+        </div>
+    </footer>
+
+    <script src="{% static 'core/js/bootstrap/bootstrap.min.js' %}"></script>
 </body>
 
 </html>

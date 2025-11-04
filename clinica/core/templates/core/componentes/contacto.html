@@ -1,0 +1,49 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %} Contactenos {% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card card-custom">
+                <div class="card-header text-white" style="background-color: #1a202c; border-bottom-color: #09b;">
+                    <h3 class="text-center mb-0">Contáctenos</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo Electrónico:</label>
+                            <input type="email" class="form-control" id="correo" name="correo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mensaje" class="form-label">Mensaje:</label>
+                            <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-custom">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h5>También puedes seguirnos o contactarnos en nuestras redes sociales:</h5>
+
+    <div class="main center">
+        <div class="icon center">
+            <img src="{% static 'core/svg/facebook.svg' %}" width="60" class="facebook">
+        </div>
+        <div class="icon center">
+            <img src="{% static 'core/svg/instagram.svg' %}" width="60" class="instagram">
+        </div>
+        <div class="icon center">
+            <img src="{% static 'core/svg/whatsapp.svg' %}" width="60" class="whatsapp">
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,97 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+    <title>Inicio de sesión</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Contenedor principal que envuelve todo el contenido -->
+
+        <div class="ecg-loader">
+            <!-- Div para el loader de electrocardiograma (ECG) con animación -->
+            <svg viewBox="0 0 300 100" preserveAspectRatio="none">
+                <!-- Elemento SVG para gráficos vectoriales -->
+                <!-- viewBox: define el sistema de coordenadas (0,0 a 300,100) -->
+                <!-- preserveAspectRatio="none": el SVG se estira para llenar el contenedor -->
+
+                <!-- Elemento polyline para crear líneas conectadas -->
+                <!-- points: define los puntos de la línea en formato x,y 
+                 0,50 20,50 30,30 40,70 50,50 80,50 90,10 100,90-->
+                <!-- Continuación de las coordenadas de la onda 
+                  110,50 140,50 150,30 160,70 170,50 300,50-->
+                <polyline class="ecg-line" points="
+                0,50 20,50 30,30 40,70 50,50 80,50 90,10 100,90
+                110,50 140,50 150,30 160,70 170,50 300,50" />
+                <!-- Cierre del elemento polyline -->
+            </svg>
+            <!-- Cierre del elemento SVG -->
+        </div>
+        <!-- Cierre del div del ecg-loader -->
+
+        <div class="login-box">
+            <!-- Contenedor del formulario de login con efectos animados -->
+            <form method="post">
+                <!-- Formulario que enviará datos al servidor mediante método POST -->
+                {% csrf_token %}
+                <!-- Token de seguridad de Django (protección contra ataques CSRF) -->
+                
+                <div class="form-content">
+                    <!-- Contenedor del contenido del formulario con animación -->
+                    <h2>Inicio de sesión</h2>
+                    <!-- Título del formulario -->
+
+                    <!-- Mensaje de error para credenciales incorrectas -->
+                    {% if form.errors %}
+                    <div class="alert alert-error" style="color: red; margin-bottom: 15px;">
+                        <!-- Mensaje que se muestra cuando el email o contraseña son incorrectos -->
+                        Correo o contraseña incorrectos. Por favor intenta de nuevo.
+                    </div>
+                    {% endif %}
+
+                    <div class="input-box">
+                        <!-- Contenedor individual para el campo de email -->
+                        <input type="email" id="email" name="email" required>
+                        <!-- Campo de entrada para correo electrónico -->
+                        <label for="email">Correo:</label>
+                        <!-- Etiqueta asociada al campo email mediante el atributo for -->
+                    </div>
+                    <!-- Cierre del input-box para email -->
+
+                    <div class="input-box">
+                        <!-- Contenedor individual para el campo de contraseña -->
+                        <input type="password" id="password" name="password" required>
+                        <!-- Campo de entrada para contraseña -->
+                        <label for="password">Contraseña:</label>
+                        <!-- Etiqueta para el campo de contraseña -->
+                    </div>
+                    <!-- Cierre del input-box para contraseña -->
+
+                    <button type="submit" class="btn">Iniciar sesión</button>
+                    <!-- Botón para enviar el formulario -->
+
+                    <div class="signup-link">
+                        <!-- Contenedor para el enlace de registro -->
+                        <p>¿No tienes una cuenta? <br><a href="{% url 'core:registrar' %}">Regístrate aquí</a></p>
+                        <!-- Párrafo con enlace a la página de registro -->
+                    </div>
+                    <!-- Cierre del signup-link -->
+                </div>
+                <!-- Cierre del form-content -->
+            </form>
+            <!-- Cierre del formulario -->
+        </div>
+        <!-- Cierre del login-box -->
+    </div>
+    <!-- Cierre del container principal -->
+
+</body>
+
+</html>
