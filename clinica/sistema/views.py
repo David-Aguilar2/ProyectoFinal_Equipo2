@@ -173,17 +173,12 @@ class PacienteDeleteView(DeleteView):
 
 #Crear una clase genérica para actualizar un paciente
 class PacienteUpdateView(UpdateView):
-    
-    #Indicar el modelo
     model = Paciente
     form_class = PacienteForm
     template_name = 'pacientes/pacientes-update.html'
 
-    # success_url se manejará dinámicamente en get_success_url
-    
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        # Pre-cargar el correo y contraseña del usuario en el formulario
         paciente = self.get_object()
         if paciente and paciente.id_usuario:
             form.fields['correo'].initial = paciente.id_usuario.correo
@@ -191,34 +186,77 @@ class PacienteUpdateView(UpdateView):
         return form
     
     def form_valid(self, form):
-        # Primero actualizar el usuario
         usuario = self.object.id_usuario
         usuario.correo = form.cleaned_data['correo']
         
-        # Solo actualizar contraseña si se proporcionó una nueva
         if form.cleaned_data.get('contrasenia'):
             usuario.contrasenia = form.cleaned_data['contrasenia']
         usuario.save()
         
-        #Actualizar el paciente
         return super().form_valid(form)
     
     def get_success_url(self):
-        # Redirigir a pacientes-list si es administrador, sino a cuenta
-        if self.request.session.get('es_administrador'):
-            return reverse_lazy('sistema:pacientes-list')
-        else:
-            return reverse_lazy('sistema:cuenta-view')
+        # Obtener el usuario actual
+        usuario_email = self.request.session.get('usuario_email')
+        if usuario_email:
+            try:
+                from .models import Usuario, Medico, Administrador
+                usuario = Usuario.objects.get(correo=usuario_email)
+                
+                # Verificar si el usuario que está editando es el mismo que está logueado
+                paciente_editado = self.get_object()
+                usuario_actual_es_paciente_editado = (
+                    hasattr(paciente_editado, 'id_usuario') and 
+                    paciente_editado.id_usuario == usuario
+                )
+                
+                # Si está editando su propia cuenta, redirigir a cuenta-view
+                if usuario_actual_es_paciente_editado:
+                    return reverse_lazy('sistema:cuenta-view')
+                
+                # Si es administrador y está editando otro paciente, redirigir a lista
+                elif Administrador.objects.filter(id_usuario=usuario).exists():
+                    return reverse_lazy('sistema:pacientes-list')
+                    
+                # Si es médico, redirigir a donde corresponda
+                elif Medico.objects.filter(id_usuario=usuario).exists():
+                    return reverse_lazy('sistema:medicos-list')
+                    
+            except Usuario.DoesNotExist:
+                pass
+        
+        # Redirección por defecto
+        return reverse_lazy('sistema:cuenta-view')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Actualizar Paciente'
-        # Pasar si es administrador desde la sesión
-        context['es_administrador'] = self.request.session.get('es_administrador', False)
+        
+        # Determinar si está editando su propia cuenta
+        usuario_email = self.request.session.get('usuario_email')
+        if usuario_email:
+            try:
+                from .models import Usuario
+                usuario = Usuario.objects.get(correo=usuario_email)
+                paciente_editado = self.get_object()
+                
+                # Verificar si está editando su propia cuenta
+                context['editando_propia_cuenta'] = (
+                    hasattr(paciente_editado, 'id_usuario') and 
+                    paciente_editado.id_usuario == usuario
+                )
+                
+                # También pasar si es administrador para el botón cancelar
+                from .models import Administrador
+                context['es_administrador'] = Administrador.objects.filter(id_usuario=usuario).exists()
+                
+            except Usuario.DoesNotExist:
+                context['editando_propia_cuenta'] = False
+                context['es_administrador'] = False
+        
         return context
     
     def dispatch(self, request, *args, **kwargs):
-        # Verifica si el usuario está autenticado.
         if not request.session.get('usuario_autenticado'):
             return redirect('core:login')
         return super().dispatch(request, *args, **kwargs)
@@ -288,11 +326,9 @@ class MedicoDeleteView(DeleteView):
     
 #Crear una clase genérica para actualizar un medico
 class MedicoUpdateView(UpdateView):
-    
     model = Medico
     form_class = MedicoForm
     template_name = 'medicos/medicos-update.html'
-    # success_url se manejará dinámicamente en get_success_url
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -313,16 +349,64 @@ class MedicoUpdateView(UpdateView):
         return super().form_valid(form)
     
     def get_success_url(self):
-        # Redirigir a medicos-list si es administrador, sino a cuenta
-        if self.request.session.get('es_administrador'):
-            return reverse_lazy('sistema:medicos-list')
-        else:
-            return reverse_lazy('sistema:cuenta-view')
+        # Obtener el usuario actual
+        usuario_email = self.request.session.get('usuario_email')
+        if usuario_email:
+            try:
+                from .models import Usuario, Medico, Administrador
+                usuario = Usuario.objects.get(correo=usuario_email)
+                
+                # Verificar si el usuario que está editando es el mismo que está logueado
+                medico_editado = self.get_object()
+                usuario_actual_es_medico_editado = (
+                    hasattr(medico_editado, 'id_usuario') and 
+                    medico_editado.id_usuario == usuario
+                )
+                
+                # Si está editando su propia cuenta, redirigir a cuenta-view
+                if usuario_actual_es_medico_editado:
+                    return reverse_lazy('sistema:cuenta-view')
+                
+                # Si es administrador y está editando otro médico, redirigir a lista
+                elif Administrador.objects.filter(id_usuario=usuario).exists():
+                    return reverse_lazy('sistema:medicos-list')
+                    
+                # Si es médico editando otro médico (no debería pasar), redirigir a cuenta
+                elif Medico.objects.filter(id_usuario=usuario).exists():
+                    return reverse_lazy('sistema:cuenta-view')
+                    
+            except Usuario.DoesNotExist:
+                pass
+        
+        # Redirección por defecto
+        return reverse_lazy('sistema:cuenta-view')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Actualizar Médico'  # ✅ Corregido
-        context['es_administrador'] = self.request.session.get('es_administrador', False)
+        context['titulo'] = 'Actualizar Médico'
+        
+        # Determinar si está editando su propia cuenta
+        usuario_email = self.request.session.get('usuario_email')
+        if usuario_email:
+            try:
+                from .models import Usuario
+                usuario = Usuario.objects.get(correo=usuario_email)
+                medico_editado = self.get_object()
+                
+                # Verificar si está editando su propia cuenta
+                context['editando_propia_cuenta'] = (
+                    hasattr(medico_editado, 'id_usuario') and 
+                    medico_editado.id_usuario == usuario
+                )
+                
+                # También pasar si es administrador para el botón cancelar
+                from .models import Administrador
+                context['es_administrador'] = Administrador.objects.filter(id_usuario=usuario).exists()
+                
+            except Usuario.DoesNotExist:
+                context['editando_propia_cuenta'] = False
+                context['es_administrador'] = False
+        
         return context
     
     def dispatch(self, request, *args, **kwargs):
