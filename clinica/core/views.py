@@ -23,22 +23,46 @@ class LoginView(FormView):
         return super().form_valid(form)
 
 class MenuView(TemplateView):
-    #Vista del menú principal protegida.
-
     template_name = 'core/componentes/menu.html'
     
     def dispatch(self, request, *args, **kwargs):
-        # Verifica si el usuario está autenticado antes de mostrar el menú.
-
         if not request.session.get('usuario_autenticado'):
             return redirect('core:login')
         return super().dispatch(request, *args, **kwargs)
     
     def get_context_data(self, **kwargs):
-        #Agrega información del usuario al contexto del template.
-
         context = super().get_context_data(**kwargs)
-        context['usuario_email'] = self.request.session.get('usuario_email')
+        usuario_email = self.request.session.get('usuario_email')
+        context['usuario_email'] = usuario_email
+        
+        if usuario_email:
+            from sistema.models import Usuario, Paciente, Medico, Administrador
+            
+            try:
+                usuario = Usuario.objects.get(correo=usuario_email)
+                
+                # Determinar tipo de usuario
+                try:
+                    paciente = Paciente.objects.get(id_usuario=usuario)
+                    context['usuario_nombre'] = f"{paciente.nombres} {paciente.apellidos}"
+                    context['es_paciente'] = True
+                    context['paciente_id'] = paciente.id_paciente  # Para usar en citas
+                except Paciente.DoesNotExist:
+                    try:
+                        medico = Medico.objects.get(id_usuario=usuario)
+                        context['usuario_nombre'] = f"Dr. {medico.nombres} {medico.apellidos}"
+                        context['es_medico'] = True
+                    except Medico.DoesNotExist:
+                        try:
+                            administrador = Administrador.objects.get(id_usuario=usuario)
+                            context['usuario_nombre'] = f"{administrador.nombres} {administrador.apellidos}"
+                            context['es_administrador'] = True
+                        except Administrador.DoesNotExist:
+                            context['usuario_nombre'] = usuario_email
+            
+            except Usuario.DoesNotExist:
+                context['usuario_nombre'] = usuario_email
+        
         return context
 
 class ContactenosView(TemplateView):

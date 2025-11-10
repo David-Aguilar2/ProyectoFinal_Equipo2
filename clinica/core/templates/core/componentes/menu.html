@@ -5,11 +5,11 @@
 {% block content %}
 <div class="container">
     <!-- Información del usuario y cerrar sesión -->
-    {% if usuario_email %}
-    <div class="user-info text-end mb-4 p-3 bg-light rounded">
+    {% if usuario_nombre %}
+    <div class="user-info text-end mb-4 p-3 bg-transparent rounded">
         <div class="d-flex justify-content-between align-items-center">
             <span class="text-accent">
-                <strong>Bienvenido:</strong> {{ usuario_email }}
+                <strong>Bienvenido:</strong> {{ usuario_nombre }}
             </span>
             <a href="{% url 'core:logout' %}" class="btn btn-outline-danger btn-sm">
                 Cerrar Sesión
@@ -21,31 +21,40 @@
     <h1 class="text-center text-accent mb-5">Menú Principal</h1>
 
     <div class="row justify-content-center text-center">
-        <!-- Pacientes -->
+        <!-- Pacientes - Solo Administrador y Médico -->
+        {% if es_administrador or es_medico %}
         <div class="col-md-4 mb-5">
             <a href="{% url 'sistema:pacientes-list' %}" class="text-decoration-none">
                 <img src="{% static 'core/svg/pacientes.svg' %}" alt="Pacientes" class="mb-3" width="80">
                 <h5 class="text-accent">Pacientes</h5>
+                {% if es_medico %}
+                <small class="text-muted">Solo lectura</small>
+                {% endif %}
             </a>
         </div>
+        {% endif %}
 
-        <!-- Médicos -->
+        <!-- Médicos - Solo Administrador -->
+        {% if es_administrador %}
         <div class="col-md-4 mb-5">
             <a href="{% url 'sistema:medicos-list' %}" class="text-decoration-none">
                 <img src="{% static 'core/svg/medicos.svg' %}" alt="Médicos" class="mb-3" width="80">
                 <h5 class="text-accent">Médicos</h5>
             </a>
         </div>
+        {% endif %}
 
-        <!-- Especialidades -->
+        <!-- Especialidades - Solo Administrador -->
+        {% if es_administrador %}
         <div class="col-md-4 mb-5">
             <a href="{% url 'sistema:especialidad-list' %}" class="text-decoration-none">
                 <img src="{% static 'core/svg/especialidad.svg' %}" alt="Especialidades" class="mb-3" width="80">
                 <h5 class="text-accent">Especialidades</h5>
             </a>
         </div>
+        {% endif %}
 
-        <!-- Citas -->
+        <!-- Citas - Todos los usuarios -->
         <div class="col-md-4 mb-5">
             <a href="{% url 'sistema:citas-list' %}" class="text-decoration-none">
                 <img src="{% static 'core/svg/citas.svg' %}" alt="Citas" class="mb-3" width="80">
@@ -53,9 +62,9 @@
             </a>
         </div>
 
-        <!-- Cuenta -->
+        <!-- Cuenta - Todos los usuarios -->
         <div class="col-md-4 mb-5">
-            <a href="" class="text-decoration-none">
+            <a href="{% url 'sistema:cuenta-view' %}" class="text-decoration-none">
                 <img src="{% static 'core/svg/cuenta.svg' %}" alt="Citas" class="mb-3" width="80">
                 <h5 class="text-accent">Tu cuenta</h5>
             </a>

@@ -3,37 +3,48 @@
 {% block title %} Lista de Medicos {% endblock %}
 
 {% block content %}
-<h1 class="text-center">Lista de Médicos</h1>
-<br>
-<a href="{% url 'sistema:medicos-create'%}" class="btn btn-custom">Agregar nuevo médico</a>
-<br><br>
-<table class="table table-custom table-hover">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Correo</th>
-            <th scope="col">Nombres</th>
-            <th scope="col">Apellidos</th>
-            <th scope="col">Teléfono</th>
-            <th scope="col">Especialidad</th>
-            <th scope="col">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!--Iterar sobre los medicos de la BD-->
-        {% for m in medicos %}
-        <tr>
-            <th scope="row">{{ forloop.counter }}</th>
-            <td>{{m.id_usuario.correo}}</td>
-            <td>{{m.nombres}}</td>
-            <td>{{m.apellidos}}</td>
-            <td>{{m.telefono}}</td>
-            <td>{{m.id_especialidad.nombre_especialidad}}</td>
-            <td>
-                <a href="{% url 'sistema:medicos-update' m.id_medico %}" class="btn btn-outline-warning">Editar</a>
-                <a href="{% url 'sistema:medicos-delete' m.id_medico %}" class="btn btn-outline-danger">Eliminar</a>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container mt-4 mb-5">
+    <div class="card" style="background-color: #2d3748; border-color: #0cf;">
+        <div class="card-header" style="background-color: #1a202c; border-bottom-color: #0cf;">
+            <h2 class="card-title text-accent text-center mb-0">Lista de Médicos</h2>
+        </div>
+        <div class="card-body" style="background-color: #2c384f;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <a href="{% url 'sistema:medicos-create'%}" class="btn btn-custom">👨‍⚕️ Agregar nuevo médico</a>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-dark table-hover" style="border-color: #0cf;">
+                    <thead style="background-color: #1a202c;">
+                        <tr>
+                            <th scope="col" style="border-color: #0cf; color: #0cf;">#</th>
+                            <th scope="col" style="border-color: #0cf; color: #0cf;">Correo</th>
+                            <th scope="col" style="border-color: #0cf; color: #0cf;">Nombres</th>
+                            <th scope="col" style="border-color: #0cf; color: #0cf;">Apellidos</th>
+                            <th scope="col" style="border-color: #0cf; color: #0cf;">Teléfono</th>
+                            <th scope="col" style="border-color: #0cf; color: #0cf;">Especialidad</th>
+                            <th scope="col" style="border-color: #0cf; color: #0cf;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in medicos %}
+                        <tr>
+                            <th scope="row" style="border-color: #0cf;">{{ forloop.counter }}</th>
+                            <td style="border-color: #0cf;">{{m.id_usuario.correo}}</td>
+                            <td style="border-color: #0cf;">{{m.nombres}}</td>
+                            <td style="border-color: #0cf;">{{m.apellidos}}</td>
+                            <td style="border-color: #0cf;">{{m.telefono}}</td>
+                            <td style="border-color: #0cf;">{{m.id_especialidad.nombre_especialidad}}</td>
+                            <td style="border-color: #0cf;">
+                                <a href="{% url 'sistema:medicos-update' m.id_medico %}" class="btn btn-outline-warning btn-sm">✏️ Editar</a>
+                                <a href="{% url 'sistema:medicos-delete' m.id_medico %}" class="btn btn-outline-danger btn-sm">🗑️ Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

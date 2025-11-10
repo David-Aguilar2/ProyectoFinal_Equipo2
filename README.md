@@ -31,3 +31,18 @@ que se usa es diferente.
 
 Se agregó un menú para navegar mejor por el sistema y se modificó el navbar anterior al igual
 que se agregó diseños a la web usando bootstrap y otros archivos css.
+
+Se agregó la opción de que los usuarios puedan editar y actualizar su cuenta, además se modificó el
+apartado visual de formularios y tablas.
+
+Se modificó las citas para que los usuarios pacientes y medicos solo puedan ver las citas que los
+referencien por sus ids.
+
+Se modificó el código para limitar el acceso a los diferentes tipos de usuarios a ciertas partes
+del sistema, siendo el usuario administrador el único que tiene acceso al sistema completo.
+
+Se actualizó la sección de pedir citas para que al seleccionar una especialidad ahora puedan 
+filtrarse los médicos que pertenecen a dica especialidad.
+
+El código js para las citas se pasó a la carpeta static y se enlazó correctamente desde el 
+archivo base.html.

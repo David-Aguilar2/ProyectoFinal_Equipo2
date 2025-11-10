@@ -3,21 +3,29 @@
 {% block title %} Eliminar Cita {% endblock %}
 
 {% block content %}
-<div class="card card-custom" style="border-color: #dc3545;">
-    <div class="card-header text-white" style="background-color: #dc3545; border-bottom-color: #dc3545;">
-        <h3 class="text-center mb-0">{{ titulo }}</h3>
-    </div>
-    <div class="card-body text-center">
-        <p class="fs-5">¿Estás seguro de que deseas eliminar la cita programada para <strong class="text-accent">{{ object.fecha }} a las {{ object.hora }}</strong>?</p>
-        <p class="fs-6">Paciente: <strong class="text-accent">{{ object.id_paciente.nombres }} {{ object.id_paciente.apellidos }}</strong></p>
-        <p class="fs-6">Médico: <strong class="text-accent">{{ object.id_medico.nombres }} {{ object.id_medico.apellidos }}</strong></p>
-        <p class="text-danger"><strong>¡ATENCIÓN! Esta acción no se puede deshacer.</strong></p>
+<div class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+            <div class="card card-custom" style="border-color: #dc3545;">
+                <div class="card-header text-white" style="background-color: #dc3545; border-bottom-color: #dc3545;">
+                    <h3 class="text-center mb-0">{{ titulo }}</h3>
+                </div>
+                <div class="card-body text-center p-4">
+                    <p class="fs-5 mb-3">¿Estás seguro de que deseas eliminar la cita programada para <strong class="text-accent">{{ object.fecha }} a las {{ object.hora }}</strong>?</p>
+                    <p class="fs-6 mb-3">Paciente: <strong class="text-accent">{{ object.id_paciente.nombres }} {{ object.id_paciente.apellidos }}</strong></p>
+                    <p class="fs-6 mb-3">Médico: <strong class="text-accent">{{ object.id_medico.nombres }} {{ object.id_medico.apellidos }}</strong></p>
+                    <p class="text-danger mb-4"><strong>¡ATENCIÓN! Esta acción no se puede deshacer.</strong></p>
 
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger px-4">🗑️ Confirmar eliminación</button>
-            <a href="{% url 'sistema:citas-list' %}" class="btn btn-outline-secondary px-4">Cancelar</a>
-        </form>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-center gap-3">
+                            <button type="submit" class="btn btn-danger px-4">🗑️ Confirmar eliminación</button>
+                            <a href="{% url 'sistema:citas-list' %}" class="btn btn-outline-secondary px-4">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

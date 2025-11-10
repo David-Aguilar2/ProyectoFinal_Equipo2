@@ -2,34 +2,67 @@
 
 {% block title %} Actualizar cita {% endblock %}
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    <div class="card" style="background-color: #2d3748; border-color: #0cf;">
-        <div class="card-header" style="background-color: #1a202c; border-bottom-color: #0cf;">
-            <h2 class="card-title text-accent">Actualizar cita</h2>
-        </div>
-        <div class="card-body" style="background-color: #2c384f;">
-            <div class="row">
-                {% for field in form %}
-                <div class="col-md-6 mb-3">
-                    <label for="{{ field.id_for_label }}" class="form-label text-accent">
-                        {{ field.label }}
-                    </label>
-                    {{ field }}
-                    {% if field.help_text %}
-                    <div class="form-text text-muted">{{ field.help_text }}</div>
-                    {% endif %}
-                    {% if field.errors %}
-                    <div class="text-danger small">{{ field.errors }}</div>
-                    {% endif %}
+
+<div class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+            <form method="post">
+                {% csrf_token %}
+                <div class="card" style="background-color: #2d3748; border-color: #0cf;">
+                    <div class="card-header" style="background-color: #1a202c; border-bottom-color: #0cf;">
+                        <h2 class="card-title text-accent text-center mb-0">
+                            {% if form.fields|length == 1 %}
+                            📅 Reagendar cita
+                            {% else %}
+                            ✏️ Actualizar cita
+                            {% endif %}
+                        </h2>
+                    </div>
+                    <div class="card-body" style="background-color: #2c384f;">
+                        <div class="row">
+                            {% for field in form %}
+                            <div class="col-md-12 mb-4">
+                                <label for="{{ field.id_for_label }}" class="form-label text-accent">
+                                    {{ field.label }}
+                                </label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                <div class="form-text text-muted mt-2">{{ field.help_text }}</div>
+                                {% endif %}
+                                {% if field.errors %}
+                                <div class="text-danger small mt-2">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                            
+                            <!-- Mostrar información de solo lectura para médicos -->
+                            {% if form.fields|length == 1 %}
+                            <div class="col-md-12">
+                                <div class="card mt-3" style="background-color: #1a202c; border-color: #0cf;">
+                                    <div class="card-body">
+                                        <h6 class="text-accent">Información de la cita (solo lectura):</h6>
+                                        <p class="text-accent"><strong>Paciente:</strong> {{ object.id_paciente.nombres }} {{ object.id_paciente.apellidos }}</p>
+                                        <p class="text-accent"><strong>Médico:</strong> Dr. {{ object.id_medico.nombres }} {{ object.id_medico.apellidos }}</p>
+                                        <p class="text-accent"><strong>Motivo:</strong> {{ object.motivo_consulta }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between" style="background-color: #1a202c; border-top-color: #0cf;">
+                        <button type="submit" class="btn btn-custom px-4">
+                            {% if form.fields|length == 1 %}
+                            📅 Reagendar
+                            {% else %}
+                            💾 Guardar cambios
+                            {% endif %}
+                        </button>
+                        <a href="{% url 'sistema:citas-list' %}" class="btn btn-outline-secondary px-4">❌ Cancelar</a>
+                    </div>
                 </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="card-footer d-flex justify-content-between" style="background-color: #1a202c; border-top-color: #0cf;">
-            <button type="submit" class="btn btn-custom">💾 Guardar cambios</button>
-            <a href="{% url 'sistema:citas-list' %}" class="btn btn-outline-secondary">❌ Cancelar</a>
+            </form>
         </div>
     </div>
-</form>
+</div>
 {% endblock %}

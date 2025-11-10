@@ -1,6 +1,7 @@
 #Importar el método path
 from django.urls import path
 #Importar las vistas
+from . import views
 from .views import (
     #Especialidades
     EspecialidadListView,
@@ -22,6 +23,9 @@ from .views import (
     CitaCreateView,
     CitaUpdateView,
     CitaDeleteView,
+
+    #Cuenta
+    CuentaView,
 )
 
 #Nombre descriptivo para la url
@@ -50,4 +54,8 @@ urlpatterns = [
     path('citas/nuevo/', CitaCreateView.as_view(), name='citas-create'),
     path('citas/eliminar/<int:pk>/', CitaDeleteView.as_view(), name='citas-delete'),
     path('citas/actualizar/<int:pk>/', CitaUpdateView.as_view(), name='citas-update'),
+
+    #Cuenta
+    path('cuenta/', CuentaView.as_view(), name='cuenta-view'),
+    path('api/medicos-por-especialidad/<int:especialidad_id>/', views.medicos_por_especialidad, name='medicos-por-especialidad'),
 ]
