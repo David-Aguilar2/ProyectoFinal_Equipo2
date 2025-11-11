@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+
+{% block title %} Sesión Cerrada {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card text-center" style="background-color: #2d3748; border-color: #0cf;">
+                <div class="card-header" style="background-color: #1a202c; border-bottom-color: #0cf;">
+                    <h3 class="text-accent mb-0">🔐 Sesión Cerrada</h3>
+                </div>
+                <div class="card-body p-5" style="background-color: #2c384f;">
+                    <div class="mb-4">
+                        <h4 class="text-accent">📧 Correo Actualizado</h4>
+                    </div>
+                    
+                    <p class="text-white mb-4">
+                        Tu correo electrónico ha sido actualizado exitosamente. 
+                        Por seguridad, tu sesión ha sido cerrada automáticamente.
+                    </p>
+                    
+                    <p class="text-muted mb-4">
+                        Por favor, inicia sesión nuevamente con tu nuevo correo electrónico.
+                    </p>
+
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'core:login' %}" class="btn btn-custom btn-lg">
+                            🔑 Iniciar Sesión Nuevamente
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

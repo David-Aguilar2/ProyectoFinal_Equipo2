@@ -599,56 +599,91 @@ class CuentaView(View):
 
     def post(self, request, *args, **kwargs):
         usuario_email = request.session.get('usuario_email')
+        correo_original = usuario_email
         
         if usuario_email:
             try:
                 usuario = Usuario.objects.get(correo=usuario_email)
-                administrador = Administrador.objects.get(id_usuario=usuario)
-                
-                print(f"🔍 DEBUG - Datos recibidos:")
-                print(f"Correo: {request.POST.get('correo')}")
-                print(f"Nombres: {request.POST.get('nombres')}")
-                print(f"Apellidos: {request.POST.get('apellidos')}")
-                print(f"Teléfono: {request.POST.get('telefono')}")
-                print(f"Contraseña: {'***' if request.POST.get('contrasenia') else 'No cambiada'}")
-                
-                # Actualizar datos del usuario
                 nuevo_correo = request.POST.get('correo')
-                if nuevo_correo:
-                    usuario.correo = nuevo_correo
+                correo_cambiado = nuevo_correo and nuevo_correo != usuario_email
                 
-                nueva_contrasenia = request.POST.get('contrasenia')
-                if nueva_contrasenia and nueva_contrasenia.strip():  # Solo actualizar si no está vacía
-                    usuario.contrasenia = nueva_contrasenia
+                # Actualizar datos según el tipo de usuario
+                usuario_actualizado = self._actualizar_usuario_segun_tipo(request, usuario)
                 
-                usuario.save()
-                print("✅ Usuario actualizado")
+                if not usuario_actualizado:
+                    messages.error(request, '❌ Error: No se pudo actualizar los datos.')
+                    context = self._get_context_data()
+                    return render(request, self.template_name, context)
                 
-                # Actualizar datos del administrador
-                administrador.nombres = request.POST.get('nombres', '')
-                administrador.apellidos = request.POST.get('apellidos', '')
-                administrador.telefono = request.POST.get('telefono', '')
-                administrador.save()
-                print("✅ Administrador actualizado")
-                
-                # Actualizar la sesión con el nuevo email si cambió
-                if nuevo_correo and nuevo_correo != usuario_email:
-                    request.session['usuario_email'] = nuevo_correo
+                # Si el correo cambió, cerrar sesión y redirigir
+                if correo_cambiado:
+                    request.session.flush()
+                    # CORREGIDO: Usar la ruta correcta
+                    return render(request, 'core/componentes/sesion-cerrada.html')
                 
                 messages.success(request, '✅ Tus datos se han actualizado correctamente.')
                 
             except Usuario.DoesNotExist:
                 messages.error(request, '❌ Error: Usuario no encontrado.')
-                print("❌ Usuario no encontrado")
-            except Administrador.DoesNotExist:
-                messages.error(request, '❌ Error: No tienes permisos de administrador.')
-                print("❌ Administrador no encontrado")
             except Exception as e:
                 messages.error(request, f'❌ Error al actualizar los datos: {str(e)}')
-                print(f"❌ Error: {str(e)}")
         
         context = self._get_context_data()
         return render(request, self.template_name, context)
+
+    def _actualizar_usuario_segun_tipo(self, request, usuario):
+        """Actualiza los datos según el tipo de usuario"""
+        try:
+            nuevo_correo = request.POST.get('correo')
+            nueva_contrasenia = request.POST.get('contrasenia')
+            
+            # Actualizar datos básicos del usuario
+            if nuevo_correo:
+                usuario.correo = nuevo_correo
+            
+            if nueva_contrasenia and nueva_contrasenia.strip():
+                usuario.contrasenia = nueva_contrasenia
+            
+            usuario.save()
+            
+            # Actualizar datos específicos según el tipo de usuario
+            from .models import Paciente, Medico, Administrador
+            
+            # Verificar si es paciente
+            try:
+                paciente = Paciente.objects.get(id_usuario=usuario)
+                paciente.nombres = request.POST.get('nombres', '')
+                paciente.apellidos = request.POST.get('apellidos', '')
+                paciente.telefono = request.POST.get('telefono', '')
+                paciente.save()
+                return True
+                
+            except Paciente.DoesNotExist:
+                # Verificar si es médico
+                try:
+                    medico = Medico.objects.get(id_usuario=usuario)
+                    medico.nombres = request.POST.get('nombres', '')
+                    medico.apellidos = request.POST.get('apellidos', '')
+                    medico.telefono = request.POST.get('telefono', '')
+                    medico.save()
+                    return True
+                    
+                except Medico.DoesNotExist:
+                    # Verificar si es administrador
+                    try:
+                        administrador = Administrador.objects.get(id_usuario=usuario)
+                        administrador.nombres = request.POST.get('nombres', '')
+                        administrador.apellidos = request.POST.get('apellidos', '')
+                        administrador.telefono = request.POST.get('telefono', '')
+                        administrador.save()
+                        return True
+                        
+                    except Administrador.DoesNotExist:
+                        return False  # No se encontró en ninguna tabla
+            
+        except Exception as e:
+            print(f"Error al actualizar usuario: {e}")
+            return False
 
     def _get_context_data(self):
         context = {}

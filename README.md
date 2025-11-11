@@ -46,3 +46,6 @@ filtrarse los médicos que pertenecen a dica especialidad.
 
 El código js para las citas se pasó a la carpeta static y se enlazó correctamente desde el 
 archivo base.html.
+
+Cuando un usuario actualiza su propio correo el sistem cierra sesión automaticamente y le pide al
+usuario que vuelva a iniciar sesión pero hora con el nuevo correo.
